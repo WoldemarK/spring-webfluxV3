@@ -66,15 +66,5 @@ public class UserController {
         return userService.fetchUsers(name);
     }
 
-    @GetMapping(value = "/stream", produces = MediaType.TEXT_EVENT_STREAM_VALUE)
-    public Flux<User> streamAllUsers() {
-        return userService
-                .getAllUsers()
-                .flatMap(user -> Flux
-                        .zip(Flux.interval(Duration.ofSeconds(2)),
-                                Flux.fromStream(Stream.generate(() -> user))
-                        )
-                        .map(Tuple2::getT2)
-                );
-    }
+
 }
